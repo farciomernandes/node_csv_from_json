@@ -18,5 +18,5 @@ yarn
 ```
 **3:** Instale as depedências do frontend.
 ```
-   1- node index.js
+  node index.js
 ```
