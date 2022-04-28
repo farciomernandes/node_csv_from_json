@@ -64,31 +64,36 @@ lineColumns.forEach(line => {
 			//Se o dado for um número, converte em telefone
 			try {
 				const number = phoneUtil.parseAndKeepRawInput(value, 'BR');
-				value = number.getNationalNumber();
+				const convertedNumber = number.getNationalNumber();
+				value = convertedNumber;
 			} catch (error) {
 				// Catch vazio pois o programa deve seguir normalmente
 			}
 			
-
-			const addressesItem = {
-				type: cleanString(type), 
-				tags: tags.map(tag=> cleanString(tag)), 
-				[ADDRESSES_PROPERTY_VALUE]: value
+			if(value){
+				const addressesItem = {
+					type: cleanString(type), 
+					tags: tags.map(tag=> cleanString(tag)), 
+					[ADDRESSES_PROPERTY_VALUE]: value
+				}
+	
+				item[ADDRESSES_PROPERTY].push(addressesItem);
 			}
-
-			item[ADDRESSES_PROPERTY].push(addressesItem);
+		
 
 		} else {
 
 			value = cleanString(value);
 			
+			//Verifica se o campo do csv estava vazio
 			if (item[type]) {
 
+				//Se for um array adiciona a key o valor do array
 				if (Array.isArray(item[type])) {
 					const values = item[type];
 					values.push(value);
 
-					item[type] = values;
+					item[type] = values.map(elem=> cleanString(elem));
 				} else {
 					item[type] = [item[type], value];
 				}
